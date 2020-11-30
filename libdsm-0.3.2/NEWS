@@ -1,0 +1,160 @@
+Changes between 0.3.0 and 0.3.1:
+--------------------------------
+
+  * Fix crash when used from multipe threads
+  * Fix nl_langinfo detection on Android
+  * Fix build for winstore
+
+
+Changes between 0.2.7 and 0.3.0:
+--------------------------------
+
+  * Implement SMB SESSION LOGOFF (0x74)
+  * Add smb_stat_list_next() to reduce directory traversal speed
+  * Fix guest login
+  * Fix compilation when using compatibility layer
+  * Fix crash against malformed packet in smb_fstat
+  * Fix too small buffer in smb_session_login_spnego, leading to failure
+  * Fix payload for smb_negotiate for arm5te
+  * Fix misc crashes
+
+
+Changes between 0.2.6 and 0.2.7:
+--------------------------------
+
+  * Fix build when lacking getifaddrs
+
+
+Changes between 0.2.5 and 0.2.6:
+--------------------------------
+
+  * Fix connection with a smb server listening on the port 139
+  * Fix compilation and struct packing for MSVC
+  * Fix sample code
+  * Fix Windows broadcast addresses on multiple interfaces
+  * Fix return status on smb_fstat() call
+
+
+Changes between 0.2.4 and 0.2.5:
+--------------------------------
+
+ * Add cancellation support without pipe()
+ * Continued port to Windows
+ * Fix teardown crash and wrong asserts
+ * Fix potential crash
+ * Minor build system cleanup
+
+
+Changes between 0.2.3 and 0.2.4:
+--------------------------------
+
+ * Fix compilation for Android
+ * Continued port to Windows
+
+
+Changes between 0.2.2 and 0.2.3:
+--------------------------------
+
+ * Partial port to Windows (Win32 and WinRT/UWP)
+ * Fix logged state after smb_session_login_ntlm
+
+
+Changes between 0.2.1 and 0.2.2:
+--------------------------------
+
+ * Disable DEBUG mode by default
+ * Stability improvements
+
+
+Changes between 0.2.0 and 0.2.1:
+--------------------------------
+
+ * Fix seek with file > 2GB on Android
+ * smb_fread can skip bytes
+
+
+Changes between 0.1.0 and 0.2.0:
+--------------------------------
+
+ * Add files and folder deletion with smb_directory_rm and smb_file_rm
+ * Add folder creation with smb_directory_create
+ * Add files creation with smb_fwrite
+ * Add files and folder move/rename with smb_file_mv
+ * Fix session state after spnego authentication
+ * Fix return values of all public functions: return a negative number in case
+   of error, and 0 or a positive number in case of success.
+ * Add smb_session_get_nt_status: get the last NT_STATUS
+ * Only export needed symbols
+
+
+Changes between 0.0.7 and 0.1.0:
+--------------------------------
+
+ * Fix shares listing when server returns a tid equal to 0
+   Notably TimeCapsule and AirPort Express/Extreme servers
+ * Fix crashes and wrong assertions
+ * Improve BSD compatibility
+
+
+Changes between 0.0.6 and 0.0.7:
+--------------------------------
+
+ * Rework folders opening with large number of files (FIND_NEXT)
+ * Fix for reading from OS X SMB Sharing
+ * Fix build for old glibc versions
+ * Fix support for large files (fix for >1GiB and for >4GiB)
+ * Fix potential deadlock when server disconnects
+
+
+Changes between 0.0.5 and 0.0.6:
+--------------------------------
+
+ * Fix iOS compilation
+ * Fix regression on smb_buffer_alloca that introduced login and discovery
+   issues
+ * Fix double-free crash
+
+
+Changes between 0.0.4 and 0.0.5:
+--------------------------------
+
+ * Rework netbios_ns timeouts
+ * Expose less APIs and defines
+ * Fix support for Darwin OS missing clock_gettime()
+
+
+Changes between 0.0.3 and 0.0.4:
+--------------------------------
+
+ * Improve discovery that is now done in a separate thread and lot more robust
+ * API: Add netbios_ns_discover_start and netbios_ns_discover_stop to start and
+   stop a discovery task
+ * API: Remove netbios_ns_discover, netbios_ns_entry_count, netbios_ns_entry_at,
+   netbios_ns_clear, netbios_ns_abort. Use the new discovers calls instead
+ * Fix smb_fopen failing to open long path
+
+
+Changes between 0.0.2 and 0.0.3:
+--------------------------------
+
+ * Port to Android
+ * Simplification of the NetBios discovery API
+ * New abort mechanism when discovery: netbios_ns_abort
+ * Numerous cleanups, include headers and API
+ * Provide a replacement for strlcpy
+ * Fix numerous warnings, build issues and leaks
+ * Support SMBX servers
+
+
+Changes between 0.0.1 and 0.0.2:
+--------------------------------
+
+ * Fix various build failures
+
+
+First release 0.0.1:
+--------------------
+
+ * This is the first basic release.
+ * It should provide the basics for this library, but is not ready yet for
+   prime-time

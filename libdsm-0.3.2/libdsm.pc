@@ -1,0 +1,11 @@
+prefix=/usr/local
+exec_prefix=${prefix}
+libdir=${prefix}/lib
+includedir=${prefix}/include
+
+Name: libdsm
+Description: Minimalist and read-only smb client library
+Version: 0.3.2
+Cflags: -I${includedir} -pthread
+Libs: -L${libdir} -ldsm
+Libs.private:  -ltasn1   
