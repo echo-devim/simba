@@ -13,7 +13,7 @@ $ ./simba -h
 Lightweight SMBv1 client
 Usage:
   Simba [OPTION...]
-
+  -g, --gui           Show GTK3 gui
   -h, --help          Show this help menu
   -s, --server arg    SMB Server IP Address
   -d, --domain arg    Domain/Workgroup
