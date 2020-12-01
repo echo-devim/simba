@@ -42,6 +42,7 @@ public:
     void removedir(string &path);
     void makedir(string &path);
     bool isLogged();
+    bool isdir(string &path);
 };
 
 #endif

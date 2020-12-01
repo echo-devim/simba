@@ -11,6 +11,7 @@ using namespace std;
 class SimbaGUI {
 private:
     Simba *simba;
+    Gtk::Label *statusbar;
     Gtk::Entry *pathbar;
     Gtk::TreeView *tree_view;
     Gtk::TreeModelColumn<Glib::ustring> itemval;
@@ -21,6 +22,8 @@ private:
     void on_item_click(const Gtk::TreeModel::Path& path, Gtk::TreeViewColumn* column);
     bool on_pathbar_key_press(GdkEventKey* event);
     void updateTreeView();
+    void on_btnUpload_click();
+    void on_btnDownload_click();
 public:
     SimbaGUI(string &server_ip, string &share, string &domain, string &username);
     ~SimbaGUI();

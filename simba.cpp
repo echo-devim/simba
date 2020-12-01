@@ -117,6 +117,18 @@ bool Simba::download_file(smb_file *file, smb_fd fd, string filename) {
     return true;
 }
 
+bool Simba::isdir(string &path) {
+    smb_fd fd;
+    if (smb_fopen(session, tid, path.c_str(), SMB_MOD_RO, &fd) != DSM_SUCCESS) {
+        cerr << "Unable to open file " << path << endl;
+        return false;
+    }
+
+    smb_file *file = smb_session_file_get(session, fd);
+    bool is_dir = file->is_dir;
+    smb_fclose(session, fd);
+    return is_dir;
+}
 
 bool Simba::download(string &path) {
     smb_fd fd;
@@ -129,6 +141,7 @@ bool Simba::download(string &path) {
 
     if (file->is_dir) {
         cerr << "Unable to download a directory" << endl;
+        smb_fclose(session, fd);
         return false;
     } else {
         return this->download_file(file, fd, path.substr(path.find_last_of("\\")+1));
