@@ -2,6 +2,8 @@
 
 I don't like Samba, thus I created Simba, a tiny simple SMB client written in C++ and based on [libdsm](https://github.com/videolabs/libdsm).
 
+![logo](logo.png)
+
 The client implements only some essential file/directory operations.
 The most relevant supported operations are upload and download of files.
 
