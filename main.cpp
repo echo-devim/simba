@@ -22,7 +22,7 @@ void printHelp() {
 
 int main(int argc, char *argv[])
 {
-    cxxopts::Options options("Simba", "Lightweight SMBv1 client");
+    cxxopts::Options options("Simba", "Lightweight SMB client");
     options.add_options()
     ("h,help", "Show this help menu")
     #ifdef ENABLE_GUI

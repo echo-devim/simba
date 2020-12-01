@@ -1,6 +1,6 @@
 # Simba
 
-I don't like Samba, thus I created Simba, a tiny simple SMBv1 client written in C++ and based on [libdsm](https://github.com/videolabs/libdsm).
+I don't like Samba, thus I created Simba, a tiny simple SMB client written in C++ and based on [libdsm](https://github.com/videolabs/libdsm).
 
 The client implements only some essential file/directory operations.
 The most relevant supported operations are upload and download of files.
@@ -10,7 +10,7 @@ The client supports also a GTK3 gui (all operations are implemented except move)
 ## Usage
 ```
 $ ./simba -h                                     
-Lightweight SMBv1 client
+Lightweight SMB client
 Usage:
   Simba [OPTION...]
   -g, --gui           Show GTK3 gui
