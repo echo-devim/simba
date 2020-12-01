@@ -35,6 +35,7 @@ void SimbaGUI::on_item_click(const Gtk::TreeModel::Path& path, Gtk::TreeViewColu
     auto model = tree_view->get_model();
     auto iter = model->get_iter(path);
     Gtk::TreeModel::Row row = *iter;
+    string old_current_path = current_path;
     if ((current_path != "") && (current_path[current_path.length()-1] != '\\'))
         current_path += "\\";
     current_path += row.get_value(itemval);
@@ -51,6 +52,7 @@ void SimbaGUI::on_item_click(const Gtk::TreeModel::Path& path, Gtk::TreeViewColu
     } else {
         string filename = subpath.substr(subpath.find_last_of("\\")+1);
         this->statusbar->set_text(filename + " is a file.");
+        current_path = old_current_path; //Restore current path (pointing to the parent directory of current file)
     }
 }
 
