@@ -15,6 +15,7 @@ private:
     Gtk::Entry *pathbar;
     Gtk::TreeView *tree_view;
     Gtk::TreeModelColumn<Glib::ustring> itemval;
+    Gtk::TreeModelColumn<Glib::ustring> itemicon;
     Glib::RefPtr< Gtk::ListStore > list_store;
     Glib::RefPtr<Gtk::Application> app;
     string current_path;
@@ -24,6 +25,9 @@ private:
     void updateTreeView();
     void on_btnUpload_click();
     void on_btnDownload_click();
+    void on_btnBack_click();
+    void on_btnDelete_click();
+    void on_btnMkdir_click();
 public:
     SimbaGUI(string &server_ip, string &share, string &domain, string &username);
     ~SimbaGUI();

@@ -5,7 +5,7 @@ I don't like Samba, thus I created Simba, a tiny simple SMBv1 client written in 
 The client implements only some essential file/directory operations.
 The most relevant supported operations are upload and download of files.
 
-The client supports also a GTK3 gui (still in development).
+The client supports also a GTK3 gui (all operations are implemented except move).
 
 ## Usage
 ```

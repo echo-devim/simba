@@ -65,6 +65,11 @@ void SimbaGUI::updateTreeView() {
     for (string f : files) {
         if ((f != ".") && (f != "..")) {
             Gtk::TreeModel::Row row = *(list_store->append());
+            //Hacky icons
+            if (f.find('.') == string::npos)
+                row[itemicon] = string("🗀").c_str();
+            else
+                row[itemicon] = string("🗎").c_str();
             row[itemval] = f.c_str();
         }
     }
@@ -147,15 +152,79 @@ void SimbaGUI::on_btnUpload_click() {
     }
 }
 
+void SimbaGUI::on_btnBack_click() {
+    size_t pos = this->current_path.find_last_of('\\');
+    if (pos != string::npos) {
+        current_path = current_path.substr(0, pos);
+        this->pathbar->set_text(current_path);
+        updateTreeView();
+    }
+}
+
+void SimbaGUI::on_btnDelete_click() {
+    Glib::RefPtr<Gtk::TreeSelection> selection = this->tree_view->get_selection();
+    Gtk::TreeModel::iterator selectedRow = selection->get_selected();
+    if (selectedRow) { //if the iterator is valid
+        Gtk::TreeModel::Row row = *selectedRow;
+        string filename = row.get_value(this->itemval);
+        string subpath = "";
+        size_t pos = current_path.find('\\');
+        if (pos != string::npos) {
+            subpath = current_path.substr(pos+1);
+        }
+        if (subpath != "")
+            subpath += "\\";
+        subpath += filename;
+        if (!this->simba->isdir(subpath)) {
+            this->simba->remove(subpath);
+        } else {
+            this->simba->removedir(subpath);
+        }
+        updateTreeView();
+        this->statusbar->set_text("");
+    } else {
+        this->statusbar->set_text("Choose a file or directory");
+    }
+}
+
+void SimbaGUI::on_btnMkdir_click() {
+    Glib::ustring message = "Folder name:";
+    Gtk::MessageDialog *inputbox = new Gtk::MessageDialog(message);
+    inputbox->set_title("New Directory");
+    Gtk::Box *content = inputbox->get_content_area();
+    Gtk::Entry *entry = new Gtk::Entry();
+    entry->set_size_request(40,10);
+    content->pack_end(*(dynamic_cast<Gtk::Widget*>(entry)), false, false, 0);
+    inputbox->show_all();
+    int response = inputbox->run();
+    Glib::ustring name = entry->get_text();
+    delete inputbox;
+    string dirname = name;
+    if ((response == Gtk::RESPONSE_OK) && (dirname != "")) {
+        string subpath = "";
+        size_t pos = current_path.find('\\');
+        if (pos != string::npos) {
+            subpath = current_path.substr(pos+1);
+        }
+        if (subpath != "")
+            subpath += "\\";
+        subpath += dirname;
+        this->simba->makedir(subpath);
+        updateTreeView();
+    }
+}
+
 void SimbaGUI::showUI() {
     Gtk::Window window;
     window.set_default_size(400, 600);
     window.set_title("Simba");
     Gtk::TreeModel::ColumnRecord colrec;
+    colrec.add(itemicon);
     colrec.add(itemval);
     list_store = Gtk::ListStore::create(colrec);
     tree_view = new Gtk::TreeView();
     tree_view->set_model(list_store);
+    tree_view->append_column("", itemicon);
     tree_view->append_column("FileName", itemval);
     tree_view->set_activate_on_single_click(false);
     for (string share : this->simba->getShares()) {
@@ -165,12 +234,26 @@ void SimbaGUI::showUI() {
     tree_view->signal_row_activated().connect(sigc::mem_fun(*this, &SimbaGUI::on_item_click));
     Gtk::VBox *vbox = new Gtk::VBox();
     Gtk::HBox *toolbar = new Gtk::HBox();
-    Gtk::Button *btnDownload = new Gtk::Button("Download");
-    Gtk::Button *btnUpload = new Gtk::Button("Upload");
+    Gtk::Button *btnMkdir = new Gtk::Button("+");
+    btnMkdir->set_tooltip_text("New directory");
+    Gtk::Button *btnDelete = new Gtk::Button("✖");
+    btnDelete->set_tooltip_text("Delete");
+    Gtk::Button *btnBack = new Gtk::Button("◄");
+    btnBack->set_tooltip_text("Go to parent directory");
+    Gtk::Button *btnDownload = new Gtk::Button("▼");
+    btnDownload->set_tooltip_text("Download");
+    Gtk::Button *btnUpload = new Gtk::Button("▲");
+    btnUpload->set_tooltip_text("Upload");
+    toolbar->add(*(dynamic_cast<Gtk::Widget*>(btnBack)));
     toolbar->add(*(dynamic_cast<Gtk::Widget*>(btnDownload)));
     toolbar->add(*(dynamic_cast<Gtk::Widget*>(btnUpload)));
+    toolbar->add(*(dynamic_cast<Gtk::Widget*>(btnMkdir)));
+    toolbar->add(*(dynamic_cast<Gtk::Widget*>(btnDelete)));
+    btnBack->signal_clicked().connect(sigc::mem_fun(*this, &SimbaGUI::on_btnBack_click));
     btnDownload->signal_clicked().connect(sigc::mem_fun(*this, &SimbaGUI::on_btnDownload_click));
     btnUpload->signal_clicked().connect(sigc::mem_fun(*this, &SimbaGUI::on_btnUpload_click));
+    btnDelete->signal_clicked().connect(sigc::mem_fun(*this, &SimbaGUI::on_btnDelete_click));
+    btnMkdir->signal_clicked().connect(sigc::mem_fun(*this, &SimbaGUI::on_btnMkdir_click));
     statusbar = new Gtk::Label();
     pathbar = new Gtk::Entry();
     dynamic_cast<Gtk::Widget*>(pathbar)->set_size_request(-1, 10);
