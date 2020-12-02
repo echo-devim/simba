@@ -262,7 +262,10 @@ void SimbaGUI::showUI() {
     dynamic_cast<Gtk::Widget*>(pathbar)->signal_key_press_event().connect(sigc::mem_fun(*this, &SimbaGUI::on_pathbar_key_press), false);
     vbox->pack_start(*(dynamic_cast<Gtk::Widget*>(pathbar)), 0, 0);
     vbox->pack_start(*(dynamic_cast<Gtk::Widget*>(toolbar)), 0, 0);
-    vbox->add(*(dynamic_cast<Gtk::Widget*>(tree_view)));
+    Gtk::ScrolledWindow *scroll = new Gtk::ScrolledWindow();
+    scroll->set_policy(Gtk::POLICY_AUTOMATIC, Gtk::POLICY_AUTOMATIC);
+    scroll->add(*(dynamic_cast<Gtk::Widget*>(tree_view)));
+    vbox->add(*(dynamic_cast<Gtk::Widget*>(scroll)));
     vbox->pack_end(*(dynamic_cast<Gtk::Widget*>(statusbar)), 0, 0);
     window.add(*(dynamic_cast<Gtk::Widget*>(vbox)));
     window.show_all();
